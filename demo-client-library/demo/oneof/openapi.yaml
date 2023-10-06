@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Vehicle Management API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Vehicle Management
+
+paths:
+  /vehicles:
+    get:
+      operationId: queryVehicles
+      tags:
+        - Vehicle Management
+      summary: Retrieve vehicle information
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vehicle"
+
+components:
+  schemas:
+    #---------------------------------------------------------------------------
+    # Enum utilities
+    #---------------------------------------------------------------------------
+    VehicleType:
+      type: string
+      enum: ["CAR", "TRUCK"]
+    VehicleColor:
+      type: string
+      enum: ["RED", "GREEN", "BLUE"]
+    #---------------------------------------------------------------------------
+    # Model objects
+    #---------------------------------------------------------------------------
+    Vehicle:
+      type: object
+      required:
+        - vehicleType
+      properties:
+        vehicleType:
+          type: string
+        color:
+          type: string
+        data:
+          $ref: "#/components/schemas/VehicleData"
+
+    #---------------------------------------------------------------------------
+    # Interface class with discriminator 'vehicleType'
+    #---------------------------------------------------------------------------
+    VehicleData:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/CarData"
+        - $ref: "#/components/schemas/TruckData"
+      discriminator:
+        propertyName: vehicleType
+        mapping:
+          "CAR": "#/components/schemas/CarData"
+          "TRUCK": "#/components/schemas/TruckData"
+    #---------------------------------------------------------------------------
+    # Concrete classes
+    #---------------------------------------------------------------------------
+    VehicleDataBase:
+      type: object
+      required:
+        - vehicleType
+      properties:
+        vehicleType:
+          type: string
+    CarData:
+      allOf:
+        - $ref: "#/components/schemas/VehicleDataBase"
+        - type: object
+          properties:
+            carAttributes:
+              type: string
+    TruckData:
+      allOf:
+        - $ref: "#/components/schemas/VehicleDataBase"
+        - type: object
+          properties:
+            truckAttributes:
+              type: string
+            truckCountWheels:
+              type: integer
