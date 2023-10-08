@@ -1,0 +1,81 @@
+openapi: 3.0.3
+info:
+  title: Vehicle Management API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Vehicle Management
+
+paths:
+  /vehicles/maps:
+    get:
+      operationId: queryVehicles
+      tags:
+        - Vehicle Management
+      summary: Retrieve vehicle information
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vehicle"
+
+components:
+  schemas:
+    #---------------------------------------------------------------------------
+    # Enum utilities
+    #---------------------------------------------------------------------------
+    VehicleType:
+      type: string
+      enum: ["CAR", "TRUCK"]
+    VehicleColor:
+      type: string
+      enum: ["RED", "GREEN", "BLUE"]
+    #---------------------------------------------------------------------------
+    # Model objects
+    #---------------------------------------------------------------------------
+    Vehicle:
+      type: object
+      required:
+        - vehicleType
+      properties:
+        vehicleType:
+          type: string
+          description: "possible values are described in enum VehicleType"
+        color:
+          type: string
+          description: "possible values are described in enum VehicleColor"
+        data:
+          $ref: "#/components/schemas/StringToObjectMap"
+    #---------------------------------------------------------------------------
+    # Data maps
+    #---------------------------------------------------------------------------
+    StringToObjectMap:
+      type: object
+      additionalProperties: true
+      description: |
+        "This object should not be used directrly. 
+        Use the concrete maps (CarDataMap, TruckDataMap) for the desired vehicle type instead."
+    CarDataMap:
+      type: object
+      properties:
+        carAttributes:
+          type: string
+      required:
+        - carAttributes
+      additionalProperties: true
+    TruckDataMap:
+      type: object
+      properties:
+        truckAttributes:
+          type: string
+        truckCountWheels:
+          type: integer
+      required:
+        - truckAttributes
+        - truckCountWheels
+      additionalProperties: true
