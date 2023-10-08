@@ -61,6 +61,38 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
 
+  /usertasks/oneof/{taskId}/completions:
+    post:
+      operationId: createUsertaskCompletion
+      tags:
+        - Usertask Completion Management
+      summary: Create an usertask completion
+      parameters:
+        - name: taskId
+          description: Usertask ID the completion should be created for
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        description: See NameChangeCompletionData, AddressChangeCompletionData for possible key-pairs.
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: "#/components/schemas/UsertaskCompletionRequest"
+      responses:
+        "201":
+          description: Created
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
 components:
   schemas:
     #---------------------------------------------------------------------------
@@ -191,6 +223,17 @@ components:
         mapping:
           "NAME_CHANGE_TASK": "#/components/schemas/NameChangeOutputData"
           "ADDRESS_CHANGE_TASK": "#/components/schemas/AddressChangeOutputData"
+    UsertaskCompletionRequest:
+      type: object
+      description: "possible objects are NameChangeCompletionData, AddressChangeCompletionData"
+      oneOf:
+        - $ref: "#/components/schemas/NameChangeCompletionData"
+        - $ref: "#/components/schemas/AddressChangeCompletionData"
+      discriminator:
+        propertyName: usertaskType
+        mapping:
+          "NAME_CHANGE_TASK": "#/components/schemas/NameChangeCompletionData"
+          "ADDRESS_CHANGE_TASK": "#/components/schemas/AddressChangeCompletionData"
     #---------------------------------------------------------------------------
     # Concrete classes with discriminator 'usertaskType'
     #---------------------------------------------------------------------------
@@ -318,6 +361,36 @@ components:
             required:
               type: boolean
               default: true
+    NameChangeCompletionData:
+      type: object
+      required:
+        - usertaskType
+        - evidenceAccepted
+        - acceptedNewName
+      properties:
+        usertaskType:
+          type: string
+          description: "possible values are described in enum UsertaskType"
+        evidenceAccepted:
+          type: boolean
+        acceptedNewName:
+          type: string
+        comment:
+          type: string
+    AddressChangeCompletionData:
+      type: object
+      required:
+        - usertaskType
+        - acceptedAddress
+        - acceptedAddressLine
+      properties:
+        usertaskType:
+          type: string
+          description: "possible values are described in enum UsertaskType"
+        acceptedAddress:
+          type: boolean
+        acceptedAddressLine:
+          type: string
     #---------------------------------------------------------------------------
     # Enum utilities
     #---------------------------------------------------------------------------
