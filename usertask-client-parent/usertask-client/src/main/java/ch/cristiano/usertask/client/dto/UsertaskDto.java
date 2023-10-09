@@ -2,13 +2,19 @@ package ch.cristiano.usertask.client.dto;
 
 public class UsertaskDto {
 
+    private final String id;
     private final String usertaskType;
     private final UsertaskDataBaseDto inputData;
     private Object outputData;
 
-    public UsertaskDto(String usertaskType, UsertaskDataBaseDto data) {
+    public UsertaskDto(String id, String usertaskType, UsertaskDataBaseDto inputData) {
+        this.id = id;
         this.usertaskType = usertaskType;
-        this.inputData = data;
+        this.inputData = inputData;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getUsertaskType() {

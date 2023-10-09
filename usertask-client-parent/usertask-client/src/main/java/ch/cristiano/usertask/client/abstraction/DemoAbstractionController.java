@@ -10,6 +10,7 @@ import org.openapitools.client.abstraction.model.SortOrder;
 import org.openapitools.client.abstraction.model.Usertask;
 import org.openapitools.client.abstraction.model.UsertaskType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import ch.cristiano.usertask.client.dto.UsertaskDto;
 public class DemoAbstractionController {
 
     @Autowired
+    @Qualifier("usertaskManagementApiAbstraction")
     private UsertaskManagementApi usertaskManagementApi;
 
     @RequestMapping(method = RequestMethod.GET, value = "/demo/abstraction", produces = { "application/json" })
@@ -59,7 +61,7 @@ public class DemoAbstractionController {
         String evidenceDocumentId = nameChangeInputData.getEvidenceDocumentId();
 
         NameChangeDataDto nameChangeInputDataDto = new NameChangeDataDto(oldName, newName, evidenceDocumentId);
-        UsertaskDto usertaskDto = new UsertaskDto(usertask.getUsertaskType(), nameChangeInputDataDto);
+        UsertaskDto usertaskDto = new UsertaskDto(usertask.getId(), usertask.getUsertaskType(), nameChangeInputDataDto);
 
         usertaskDto.setOutputData(usertask.getOutputData());
 
@@ -83,7 +85,7 @@ public class DemoAbstractionController {
         addressChangeDataDto.setOldCity(oldCity);
         addressChangeDataDto.setNewZipCode(newZipCode);
         addressChangeDataDto.setOldZipCode(oldZipCode);
-        UsertaskDto usertaskDto = new UsertaskDto(usertask.getUsertaskType(), addressChangeDataDto);
+        UsertaskDto usertaskDto = new UsertaskDto(usertask.getId(), usertask.getUsertaskType(), addressChangeDataDto);
 
         usertaskDto.setOutputData(usertask.getOutputData());
 

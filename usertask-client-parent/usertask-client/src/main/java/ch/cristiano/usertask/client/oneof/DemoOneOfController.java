@@ -10,6 +10,7 @@ import org.openapitools.client.oneof.model.SortOrder;
 import org.openapitools.client.oneof.model.Usertask;
 import org.openapitools.client.oneof.model.UsertaskType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import ch.cristiano.usertask.client.dto.UsertaskDto;
 public class DemoOneOfController {
 
     @Autowired
+    @Qualifier("usertaskManagementApiOneOf")
     private UsertaskManagementApi usertaskManagementApi;
 
     @RequestMapping(method = RequestMethod.GET, value = "/demo/oneof", produces = { "application/json" })
@@ -59,7 +61,7 @@ public class DemoOneOfController {
         String evidenceDocumentId = nameChangeData.getEvidenceDocumentId();
 
         NameChangeDataDto changeInputDataDto = new NameChangeDataDto(oldName, newName, evidenceDocumentId);
-        UsertaskDto usertaskDto = new UsertaskDto(usertask.getUsertaskType(), changeInputDataDto);
+        UsertaskDto usertaskDto = new UsertaskDto(usertask.getId(), usertask.getUsertaskType(), changeInputDataDto);
 
         usertaskDto.setOutputData(usertask.getOutputData());
 
@@ -83,7 +85,7 @@ public class DemoOneOfController {
         addressChangeDataDto.setOldCity(oldCity);
         addressChangeDataDto.setNewZipCode(newZipCode);
         addressChangeDataDto.setOldZipCode(oldZipCode);
-        UsertaskDto usertaskDto = new UsertaskDto(usertask.getUsertaskType(), addressChangeDataDto);
+        UsertaskDto usertaskDto = new UsertaskDto(usertask.getId(), usertask.getUsertaskType(), addressChangeDataDto);
 
         usertaskDto.setOutputData(usertask.getOutputData());
 
