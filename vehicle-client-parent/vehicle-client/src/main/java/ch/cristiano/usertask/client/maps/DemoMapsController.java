@@ -6,6 +6,7 @@ import java.util.List;
 import org.openapitools.client.maps.api.VehicleManagementApi;
 import org.openapitools.client.maps.model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,9 +20,10 @@ import ch.cristiano.usertask.client.dto.VehicleDto;
 public class DemoMapsController {
 
     @Autowired
+    @Qualifier("vehicleManagementApiMaps")
     private VehicleManagementApi vehicleManagementApi;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/demo", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/demo/maps", produces = { "application/json" })
     public ResponseEntity<List<VehicleDto>> getDemo() {
 
         List<Vehicle> vehicles = vehicleManagementApi.queryVehicles();

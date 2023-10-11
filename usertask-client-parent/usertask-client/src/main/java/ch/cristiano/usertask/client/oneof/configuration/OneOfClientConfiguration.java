@@ -12,20 +12,20 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OneOfClientConfiguration {
 
-    @Bean("restTemplateOneOf")
-    public RestTemplate restTemplateOneOf(ObjectMapper objectMapper) {
+    @Bean("usertaskRestTemplateOneOf")
+    public RestTemplate usertaskRestTemplateOneOf(ObjectMapper objectMapper) {
         return new RestTemplateBuilder()
                 .additionalMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper)).build();
     }
 
-    @Bean("apiClientOneOf")
-    public ApiClient apiClientOneOf(ObjectMapper objectMapper) {
-        return new ApiClient(restTemplateOneOf(objectMapper));
+    @Bean("usertaskApiClientOneOf")
+    public ApiClient usertaskApiClientOneOf(ObjectMapper objectMapper) {
+        return new ApiClient(usertaskRestTemplateOneOf(objectMapper));
     }
 
     @Bean("usertaskManagementApiOneOf")
     public UsertaskManagementApi usertaskManagementApiOneOf(ObjectMapper objectMapper) {
-        return new UsertaskManagementApi(apiClientOneOf(objectMapper));
+        return new UsertaskManagementApi(usertaskApiClientOneOf(objectMapper));
     }
 
 }

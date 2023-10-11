@@ -12,20 +12,20 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AbstractionClientConfiguration {
 
-    @Bean("restTemplateAbstraction")
-    public RestTemplate restTemplateAbstraction(ObjectMapper objectMapper) {
+    @Bean("usertaskRestTemplateAbstraction")
+    public RestTemplate usertaskRestTemplateAbstraction(ObjectMapper objectMapper) {
         return new RestTemplateBuilder()
                 .additionalMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper)).build();
     }
 
-    @Bean("apiClientAbstraction")
-    public ApiClient apiClientAbstraction(ObjectMapper objectMapper) {
-        return new ApiClient(restTemplateAbstraction(objectMapper));
+    @Bean("usertaskApiClientAbstraction")
+    public ApiClient usertaskApiClientAbstraction(ObjectMapper objectMapper) {
+        return new ApiClient(usertaskRestTemplateAbstraction(objectMapper));
     }
 
     @Bean("usertaskManagementApiAbstraction")
     public UsertaskManagementApi usertaskManagementApiAbstraction(ObjectMapper objectMapper) {
-        return new UsertaskManagementApi(apiClientAbstraction(objectMapper));
+        return new UsertaskManagementApi(usertaskApiClientAbstraction(objectMapper));
     }
 
 }

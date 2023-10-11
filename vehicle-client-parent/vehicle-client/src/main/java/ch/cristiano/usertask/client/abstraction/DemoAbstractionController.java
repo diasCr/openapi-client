@@ -7,7 +7,10 @@ import org.openapitools.client.abstraction.api.VehicleManagementApi;
 import org.openapitools.client.abstraction.model.CarData;
 import org.openapitools.client.abstraction.model.TruckData;
 import org.openapitools.client.abstraction.model.Vehicle;
+import org.openapitools.client.abstraction.model.VehicleColor;
+import org.openapitools.client.abstraction.model.VehicleType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,17 +24,19 @@ import ch.cristiano.usertask.client.dto.VehicleDto;
 public class DemoAbstractionController {
 
     @Autowired
+    @Qualifier("vehicleManagementApiAbstraction")
     private VehicleManagementApi vehicleManagementApi;
 
     @RequestMapping(method = RequestMethod.GET, value = "/demo/abstraction", produces = { "application/json" })
     public ResponseEntity<List<VehicleDto>> getDemo() {
 
-        List<Vehicle> vehicles = vehicleManagementApi.queryVehicles();
+        List<Vehicle> vehicles = vehicleManagementApi.queryVehicles(VehicleType.fromValue("CAR"),
+                VehicleColor.fromValue("RED"));
         List<VehicleDto> vehicleDtos = new ArrayList<>();
 
         for (Vehicle vehicle : vehicles) {
             // anti-pattern for tolerant reader
-            // switch (UsertaskType.valueOf(usertask.getUsertaskType())) {
+            // switch (VehicleType.valueOf(vehicle.getVehicleType())) {
 
             switch (vehicle.getVehicleType()) {
                 case "CAR":

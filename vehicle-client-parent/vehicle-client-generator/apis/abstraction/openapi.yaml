@@ -14,6 +14,17 @@ paths:
       tags:
         - Vehicle Management
       summary: Retrieve vehicle information
+      parameters:
+        - in: query
+          name: type
+          schema:
+            $ref: "#/components/schemas/VehicleType"
+          description: The type of the vehicle to be filtered
+        - in: query
+          name: color
+          schema:
+            $ref: "#/components/schemas/VehicleColor"
+          description: The color of the vehicle to be filtered
       responses:
         "200":
           description: OK
@@ -45,8 +56,10 @@ components:
       properties:
         vehicleType:
           type: string
+          description: "possible values are described in enum VehicleType"
         color:
           type: string
+          description: "possible values are described in enum VehicleColor"
         data:
           $ref: "#/components/schemas/VehicleData"
     #---------------------------------------------------------------------------

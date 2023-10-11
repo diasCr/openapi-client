@@ -12,20 +12,20 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class MapsClientConfiguration {
 
-    @Bean("restTemplateMaps")
-    public RestTemplate restTemplateMaps(ObjectMapper objectMapper) {
+    @Bean("usertaskRestTemplateMaps")
+    public RestTemplate usertaskRestTemplateMaps(ObjectMapper objectMapper) {
         return new RestTemplateBuilder()
                 .additionalMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper)).build();
     }
 
-    @Bean("apiClientMaps")
-    public ApiClient apiClientMaps(ObjectMapper objectMapper) {
-        return new ApiClient(restTemplateMaps(objectMapper));
+    @Bean("usertaskApiClientMaps")
+    public ApiClient usertaskApiClientMaps(ObjectMapper objectMapper) {
+        return new ApiClient(usertaskRestTemplateMaps(objectMapper));
     }
 
     @Bean("usertaskManagementApiMaps")
     public UsertaskManagementApi usertaskManagementApiMaps(ObjectMapper objectMapper) {
-        return new UsertaskManagementApi(apiClientMaps(objectMapper));
+        return new UsertaskManagementApi(usertaskApiClientMaps(objectMapper));
     }
 
 }
