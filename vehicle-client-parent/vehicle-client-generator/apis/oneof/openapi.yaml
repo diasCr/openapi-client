@@ -14,15 +14,26 @@ paths:
       tags:
         - Vehicle Management
       summary: Retrieve vehicle information
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Vehicle"
+                $ref: "#/components/schemas/VehicleResponse"
 
 components:
   schemas:
@@ -38,6 +49,18 @@ components:
     #---------------------------------------------------------------------------
     # Model objects
     #---------------------------------------------------------------------------
+    VehicleResponse:
+      type: object
+      required:
+        - vehicles
+        - paginationInfo
+      properties:
+        vehicles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Vehicle"
+        paginationInfo:
+          $ref: "#/components/schemas/PaginationInfo"
     Vehicle:
       type: object
       required:
@@ -51,7 +74,25 @@ components:
           description: "possible values are described in enum VehicleColor"
         data:
           $ref: "#/components/schemas/VehicleData"
-
+    PaginationInfo:
+      type: object
+      required:
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        numberOfElements:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
     #---------------------------------------------------------------------------
     # Interface class with discriminator 'vehicleType'
     #---------------------------------------------------------------------------

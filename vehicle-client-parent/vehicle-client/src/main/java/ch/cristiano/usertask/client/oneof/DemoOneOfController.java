@@ -7,6 +7,7 @@ import org.openapitools.client.oneof.api.VehicleManagementApi;
 import org.openapitools.client.oneof.model.CarData;
 import org.openapitools.client.oneof.model.TruckData;
 import org.openapitools.client.oneof.model.Vehicle;
+import org.openapitools.client.oneof.model.VehicleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,10 @@ public class DemoOneOfController {
     @RequestMapping(method = RequestMethod.GET, value = "/demo/oneof", produces = { "application/json" })
     public ResponseEntity<List<VehicleDto>> getDemo() {
 
-        List<Vehicle> vehicles = vehicleManagementApi.queryVehicles();
+        VehicleResponse vehicleResponse = vehicleManagementApi.queryVehicles(null, null);
         List<VehicleDto> vehicleDtos = new ArrayList<>();
 
-        for (Vehicle vehicle : vehicles) {
+        for (Vehicle vehicle : vehicleResponse.getVehicles()) {
             // anti-pattern for tolerant reader
             // switch (UsertaskType.valueOf(usertask.getUsertaskType())) {
 
